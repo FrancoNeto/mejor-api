@@ -6,7 +6,7 @@ var strategies = {
   instagram: {
     clientID: INSTAGRAM_CLIENT_ID,
     clientSecret: INSTAGRAM_CLIENT_SECRET,
-    callbackURL: API_URI + "/auth/instagram/callback"
+    callbackURL: `${API_URI}/auth/instagram/callback` 
   }
 }
 

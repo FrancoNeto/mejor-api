@@ -6,11 +6,11 @@ function connectMongo(mongoose) {
   var DB = "mejor_db";
 
   db.on('error', console.error);
-  db.once('open', function() {
+  db.once('open', () => {
     console.log('Conected to MongoDB.')
   });
 
-  var connection = mongoose.connect('mongodb://' + USER_DB + ':' + USER_PASSWORD + '@ds025232.mlab.com:25232/' + DB, {
+  var connection = mongoose.connect(`mongodb://${USER_DB}:${USER_PASSWORD}@ds025232.mlab.com:25232/${DB}`, {
     useMongoClient: true
   });
   mongoose.Promise = global.Promise;

@@ -17,7 +17,7 @@ var transporter = nodemailer.createTransport({
 });
 
 function send_email_notice() {
-  var j = schedule.scheduleJob('*/2 7-17 1-30 12 5', function() {
+  var j = schedule.scheduleJob('*/2 7-17 1-30 12 5', () => {
     var _24HrsAfter = moment().add(1, 'd');
 
     Consulting.find({
@@ -27,7 +27,7 @@ function send_email_notice() {
         }
       })
       .populate('user')
-      .exec(function(err, consultings) {
+      .exec((err, consultings) => {
         if (err) console.log(err);
         for (var i = 0, len = consultings.length; i < len; i++) {
           sendEmail(consultings[i].user.email, consultings[i].user.username);
@@ -41,10 +41,10 @@ function sendEmail(emailTo, username) {
     var mailOptions = {
       to: emailTo, // list of receivers
       subject: 'Happy Birthday', // Subject line
-      text: 'Hello' + username + 'you hava consulting in 24 hours'
+      text: `Hello ${username}, you hava consulting in 24 hours`
     };
 
-    transporter.sendMail(mailOptions, function(error, info) {
+    transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error);
       } else {

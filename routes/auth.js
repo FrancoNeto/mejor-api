@@ -10,15 +10,15 @@ router.get('/instagram',
 
 router.get('/instagram/callback',
   passportInstagram.authenticate('instagram', {
-    successRedirect: WEBAPP_URI + "/app?authenticated=success"
+    successRedirect: `${WEBAPP_URI}/app?authenticated=success`
   }));
 
-router.get('/authenticate', function(req, res, next) {
+router.get('/authenticate', (req, res, next) => {
   return res.json(req.user);
 });
 
-router.get('/logout', isAuthenticated, function(req, res) {
-  req.session.destroy(function(err) {
+router.get('/logout', isAuthenticated, (req, res) => {
+  req.session.destroy(err => {
     return res.status(200).json({
       msg: "logout with success"
     });

@@ -8,7 +8,7 @@ var isAuthenticated = require('../utils/utils');
 
 router.use(isAuthenticated);
 
-router.get('/dates-enabled', function(req, res, next) {
+router.get('/dates-enabled', (req, res, next) => {
   //This can be storage in database
   var dates = [
     '2017-12-02',
@@ -27,10 +27,10 @@ router.get('/dates-enabled', function(req, res, next) {
 });
 
 
-router.get('/dates-unavailable', function(req, res, next) {
+router.get('/dates-unavailable', (req, res, next) => {
   var datesUnavailable = [];
 
-  Consulting.find({}, "date", function(err, consultings){
+  Consulting.find({}, "date", (err, consultings) => {
     if(err) return res.status(400);
   
     for (var i = 0, len = consultings.length; i < len; i++) {
@@ -43,10 +43,10 @@ router.get('/dates-unavailable', function(req, res, next) {
 
 
 /* Schedule consulting. */
-router.post('/schedule', checkIfDateIsAvaiable, function(req, res, next) {
+router.post('/schedule', checkIfDateIsAvaiable, (req, res, next) => {
   var data = req.body;
 
-  User.findById(data.user._id, function(err, user) {
+  User.findById(data.user._id, (err, user) => {
     if (err) next(err);
 
     var consulting = new Consulting({
@@ -54,7 +54,7 @@ router.post('/schedule', checkIfDateIsAvaiable, function(req, res, next) {
       user: user
     });
 
-    consulting.save(function(err, data) {
+    consulting.save((err, data) => {
       if (err) return res.status(400).json({
         error: 'Consulting saved error'
       });
@@ -67,12 +67,12 @@ router.post('/schedule', checkIfDateIsAvaiable, function(req, res, next) {
 
 
 /* Get my consultings. */
-router.post('/my-consultings', function(req, res, next) {
+router.post('/my-consultings', (req, res, next) => {
   var data = req.body;
 
   Consulting.find({
     user: data.userId
-  }, "_id date").exec(function(err, consultings) {
+  }, "_id date").exec((err, consultings) => {
     if (err) next(err);
     return res.status(200).send(consultings);
   });
@@ -80,13 +80,13 @@ router.post('/my-consultings', function(req, res, next) {
 
 
 /* Unchek consulting. */
-router.delete('/:id/uncheck', function(req, res, next) {
+router.delete('/:id/uncheck', (req, res, next) => {
   var consultingId = req.params.id;
 
   Consulting.remove({
     _id: consultingId,
     user: req.user._id
-  }).exec(function(err) {
+  }).exec((err) => {
     if (err) {
       res.set(setHeaderErrorMessage("Could not delete the consulting"));
       return res.status(400).send();
@@ -101,7 +101,7 @@ function checkIfDateIsAvaiable(req, res, next) {
   var date = new Date(req.body.date);
   Consulting.findOne({
     date: date
-  }, function(err, data) {
+  }, (err, data) => {
     if (err) next(err);
     if (data) {
       res.set(setHeaderErrorMessage("There is consulting for this date!"));

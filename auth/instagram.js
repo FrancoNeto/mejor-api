@@ -11,7 +11,7 @@ passport.use(new InstagramStrategy({
     callbackURL: config.instagram.callbackURL
   },
   // linkedin sends back the tokens and progile info
-  function(accessToken, refreshToken, profile, done) {
+  (accessToken, refreshToken, profile, done) => {
     var profile = profile._json.data;
     var userDB;
 
@@ -31,7 +31,7 @@ passport.use(new InstagramStrategy({
     };
 
     // update the user if s/he exists or add a new user
-    User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
+    User.findOneAndUpdate(searchQuery, updates, options, (err, user) => {
       if (err) {
         return done(err);
       } else {

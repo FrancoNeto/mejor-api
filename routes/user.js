@@ -9,18 +9,18 @@ var isAuthenticated = require('../utils/utils');
 router.use(isAuthenticated);
 
 /* GET users listing. */
-router.get('/:_id', function(req, res, next) {
-  User.findById(req.params._id, function(err, user) {
+router.get('/:_id', (req, res, next) => {
+  User.findById(req.params._id, (err, user) => {
     if (err) next(err);
     res.json(user);
   });
 });
 
 /* Put user. */
-router.put('/:_id', function(req, res, next) {
+router.put('/:_id', (req, res, next) => {
   var userData = req.body;
 
-  User.findById(req.params._id, function(err, user) {
+  User.findById(req.params._id,(err, user) => {
     if (err) next(err);
     user.birth_date = userData.birth_date ? userData.birth_date : null;
     user.city = userData.city ? userData.city : null;
@@ -28,7 +28,7 @@ router.put('/:_id', function(req, res, next) {
     user.occupation = userData.occupation ? userData.occupation : null;
     user.email = userData.email ? userData.email : null;
     user.full_name = userData.full_name; 
-    user.save(function(err, data) {
+    user.save((err, data) => {
       if (err) return res.status(500).send('User can not updated!');
       res.set(setHeaderSuccessMessage('Perfil updated with success!'));
       res.json(data);
